@@ -1,0 +1,2 @@
+import{toPersian}from'./persianDate';
+export default function DateFields({params}:{params:URLSearchParams}){return <><label>از تاریخ (شمسی)<input name="jalali_from" dir="ltr" inputMode="numeric" placeholder="۱۴۰۵/۰۸/۰۱" defaultValue={toPersian(params.get('date_from')||'')} aria-label="از تاریخ شمسی، سال ماه روز"/></label><label>تا تاریخ (شمسی)<input name="jalali_to" dir="ltr" inputMode="numeric" placeholder="۱۴۰۵/۰۸/۱۸" defaultValue={toPersian(params.get('date_to')||'')} aria-label="تا تاریخ شمسی، سال ماه روز"/></label></>;}
