@@ -8,3 +8,12 @@ test('score range handles zero and rejects reversed or invalid ranges',()=>{
 test('duration distinguishes unavailable from zero and retains long minutes',()=>{
  assert.equal(duration(null),'—');assert.equal(duration(0),'۰ دقیقه و ۰ ثانیه');assert.equal(duration(3661000),'۶۱ دقیقه و ۱ ثانیه');
 });
+
+ test('default completed view and explicit all remain distinct in API requests',async()=>{
+ const {callViewParams,callApiParams}=await import('../src/reportFilters.ts');
+ assert.equal(callApiParams(callViewParams('')).get('evaluation_status'),'completed');
+ assert.equal(callApiParams(callViewParams('evaluation_status=all')).has('evaluation_status'),false);
+ const failed=callApiParams(callViewParams('processing_status=failed'));
+ assert.equal(failed.get('processing_status'),'failed');assert.equal(failed.has('evaluation_status'),false);
+ assert.equal(callApiParams(callViewParams('offset=25')).get('evaluation_status'),'completed');
+ });

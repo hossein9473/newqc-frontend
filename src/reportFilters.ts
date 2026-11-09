@@ -11,3 +11,15 @@ export function duration(ms:number|null){
  const seconds=Math.floor(ms/1000);const n=new Intl.NumberFormat('fa-IR');
  return `${n.format(Math.floor(seconds/60))} دقیقه و ${n.format(seconds%60)} ثانیه`;
 }
+
+// Missing status means the normal completed view; explicit all keeps drilldowns broad.
+export function callViewParams(query:string){
+ const p=new URLSearchParams(query);
+ if(!p.has('evaluation_status'))p.set('evaluation_status',p.has('processing_status')?'all':'completed');
+ return p;
+}
+export function callApiParams(params:URLSearchParams){
+ const p=new URLSearchParams();
+ for(const k of filterKeys){const v=params.get(k);if(v&&!(k==='evaluation_status'&&v==='all'))p.set(k,v);}
+ return p;
+}
