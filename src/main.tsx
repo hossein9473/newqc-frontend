@@ -4,6 +4,7 @@ import '@fontsource/vazirmatn/400.css';
 import '@fontsource/vazirmatn/600.css';
 import './style.css';
 import './auth.css';
+import './reports.css';
 import AuthApp from './AuthApp';
 import{calls,answers,fa,statuses,type Call}from'./data';
 
