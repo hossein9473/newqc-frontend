@@ -9,12 +9,12 @@ const messages: Record<number,string> = {
   422:'اطلاعات واردشده را بررسی کنید.',
   429:'تعداد درخواست‌ها زیاد است؛ کمی بعد دوباره تلاش کنید.',
 };
-export async function request<T>(path:string, token:string|null, body?:unknown):Promise<T> {
+export async function request<T>(path:string, token:string|null, body?:unknown,method?:'POST'|'PATCH'):Promise<T> {
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),15000);
   try {
     const response=await fetch('/api/v1'+path, {
-      method:body===undefined?'GET':'POST', cache:'no-store', credentials:'omit',
+      method:method??(body===undefined?'GET':'POST'), cache:'no-store', credentials:'omit',
       headers:{Accept:'application/json',...(body===undefined?{}:{'Content-Type':'application/json'}),...(token?{Authorization:`Bearer ${token}`}:{})},
       body:body===undefined?undefined:JSON.stringify(body),signal:controller.signal,
     });
