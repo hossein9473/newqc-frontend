@@ -31,3 +31,8 @@ test('duplicate department conflict preserves status for the form',async()=>{
  const original=globalThis.fetch;
  try{globalThis.fetch=async()=>new Response(JSON.stringify({detail:'Department name already exists'}),{status:409});await assert.rejects(request('/departments','example',{name:'Support'}),e=>e instanceof ApiError&&e.status===409);}finally{globalThis.fetch=original;}
 });
+
+test('extension release sends an explicit bodyless POST, not GET',async()=>{
+ const original=globalThis.fetch;
+ try{globalThis.fetch=async(url,options)=>{assert.equal(url,'/api/v1/support-agent-extensions/7/release');assert.equal(options.method,'POST');assert.equal(options.body,undefined);assert.equal(options.headers.Authorization,'Bearer example');return new Response(JSON.stringify({id:7,current_slot:null}),{status:200});};const result=await request('/support-agent-extensions/7/release','example',undefined,'POST');assert.equal(result.current_slot,null);}finally{globalThis.fetch=original;}
+});
