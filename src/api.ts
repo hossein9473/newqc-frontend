@@ -9,7 +9,7 @@ const messages: Record<number,string> = {
   422:'اطلاعات واردشده را بررسی کنید.',
   429:'تعداد درخواست‌ها زیاد است؛ کمی بعد دوباره تلاش کنید.',
 };
-export async function request<T>(path:string, token:string|null, body?:unknown,method?:'POST'|'PATCH'):Promise<T> {
+export async function request<T>(path:string, token:string|null, body?:unknown,method?:'POST'|'PATCH'|'DELETE'):Promise<T> {
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),15000);
   try {

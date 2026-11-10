@@ -36,3 +36,5 @@ test('extension release sends an explicit bodyless POST, not GET',async()=>{
  const original=globalThis.fetch;
  try{globalThis.fetch=async(url,options)=>{assert.equal(url,'/api/v1/support-agent-extensions/7/release');assert.equal(options.method,'POST');assert.equal(options.body,undefined);assert.equal(options.headers.Authorization,'Bearer example');return new Response(JSON.stringify({id:7,current_slot:null}),{status:200});};const result=await request('/support-agent-extensions/7/release','example',undefined,'POST');assert.equal(result.current_slot,null);}finally{globalThis.fetch=original;}
 });
+
+test('draft item deletion uses DELETE and accepts empty success response',async()=>{const original=globalThis.fetch;try{globalThis.fetch=async(url,options)=>{assert.equal(url,'/api/v1/departments/2/question-sets/3/questions/4');assert.equal(options.method,'DELETE');assert.equal(options.body,undefined);return new Response(null,{status:204});};assert.equal(await request('/departments/2/question-sets/3/questions/4','example',undefined,'DELETE'),undefined);}finally{globalThis.fetch=original;}});
