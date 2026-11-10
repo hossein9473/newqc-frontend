@@ -1,3 +1,4 @@
+import {questionError} from './questionRules.ts';
 export class ApiError extends Error {
   status: number;
   constructor(status: number, message: string) { super(message); this.status = status; }
@@ -9,7 +10,7 @@ const messages: Record<number,string> = {
   422:'اطلاعات واردشده را بررسی کنید.',
   429:'تعداد درخواست‌ها زیاد است؛ کمی بعد دوباره تلاش کنید.',
 };
-export async function request<T>(path:string, token:string|null, body?:unknown,method?:'POST'|'PATCH'|'DELETE'):Promise<T> {
+export async function request<T>(path:string, token:string|null, body?:unknown,method?:'POST'|'PATCH'|'DELETE'|'PUT'):Promise<T> {
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),15000);
   try {
@@ -24,7 +25,7 @@ export async function request<T>(path:string, token:string|null, body?:unknown,m
         'Current password is incorrect':'رمز فعلی درست نیست.',
         'New password must differ from current password':'رمز جدید باید با رمز فعلی متفاوت باشد.',
       };
-      throw new ApiError(response.status,passwordErrors[data?.detail]||messages[response.status]||'ارتباط با سرور با خطا مواجه شد؛ دوباره تلاش کنید.');
+      throw new ApiError(response.status,(path.includes('/question-sets')?questionError(data?.detail):undefined)||passwordErrors[data?.detail]||messages[response.status]||'ارتباط با سرور با خطا مواجه شد؛ دوباره تلاش کنید.');
     }
     if(response.status===204)return undefined as T;
     return await response.json() as T;

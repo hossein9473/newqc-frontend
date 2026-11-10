@@ -38,3 +38,5 @@ test('extension release sends an explicit bodyless POST, not GET',async()=>{
 });
 
 test('draft item deletion uses DELETE and accepts empty success response',async()=>{const original=globalThis.fetch;try{globalThis.fetch=async(url,options)=>{assert.equal(url,'/api/v1/departments/2/question-sets/3/questions/4');assert.equal(options.method,'DELETE');assert.equal(options.body,undefined);return new Response(null,{status:204});};assert.equal(await request('/departments/2/question-sets/3/questions/4','example',undefined,'DELETE'),undefined);}finally{globalThis.fetch=original;}});
+
+test('question order PUT sends item ids and preserves mapped domain errors',async()=>{const original=globalThis.fetch;try{globalThis.fetch=async(url,options)=>{assert.equal(options.method,'PUT');assert.deepEqual(JSON.parse(options.body),{item_ids:[3,2,1]});return new Response(JSON.stringify({detail:'Order must contain every draft item exactly once'}),{status:409});};await assert.rejects(request('/departments/1/question-sets/2/order','example',{item_ids:[3,2,1]},'PUT'),e=>e instanceof ApiError&&e.status===409&&e.message.includes('تازه‌سازی'));}finally{globalThis.fetch=original;}});
