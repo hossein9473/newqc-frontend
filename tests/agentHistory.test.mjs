@@ -1,0 +1,2 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {historyInstant} from '../src/agentHistory.ts';
+test('naive backend history is UTC and explicit offsets remain intact',()=>{assert.equal(historyInstant('2026-11-10T08:30:00'),'2026-11-10T08:30:00Z');assert.equal(historyInstant('2026-11-10T08:30:00Z'),'2026-11-10T08:30:00Z');assert.equal(historyInstant('2026-11-10T12:00:00+03:30'),'2026-11-10T12:00:00+03:30');assert.equal(new Date(historyInstant('2026-11-10T08:30:00')).getTime(),new Date('2026-11-10T12:00:00+03:30').getTime());});
