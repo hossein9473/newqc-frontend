@@ -25,3 +25,5 @@ html{scrollbar-gutter:stable}.visually-hidden{position:absolute!important;width:
 .department-list .user-row{flex-wrap:wrap}.user-inline-editor{flex:0 0 100%;width:100%;min-width:0}.user-inline-editor .department-editor{margin:0;background:#fcfbf8}.user-row .secondary[aria-pressed=true]{background:#315da8;border-color:#315da8;color:#fff;font-weight:600}
 
 .agent-extensions{width:100%;flex-basis:100%;min-width:0}.extension-summary{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px}.extension-chip{background:#f3efe6;border-radius:6px;padding:5px 9px}.agent-extensions .department-editor{margin-bottom:0}.agent-extensions .tablewrap{margin-top:20px}
+
+.extension-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}.extension-heading .secondary[aria-pressed=true]{background:#315da8;color:white;border-color:#315da8}

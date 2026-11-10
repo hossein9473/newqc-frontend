@@ -1,0 +1,1 @@
+export function extensionCallsParams(agentId:number,sourceId:number,extension:string){return new URLSearchParams({support_agent_id:String(agentId),voip_source_id:String(sourceId),extension,evaluation_status:'all'});}
