@@ -37,3 +37,8 @@ html{scrollbar-gutter:stable}.visually-hidden{position:absolute!important;width:
 .upload-queue{list-style:none;padding:0}.upload-queue li{padding:14px 0;border-bottom:1px solid #e9e3d8;overflow-wrap:anywhere}.upload-editor>.department-actions{margin-top:24px}
 .upload-results progress{width:100%;height:16px;accent-color:#315da8}.upload-results td:first-child{overflow-wrap:anywhere;max-width:360px}
 @media(max-width:600px){.upload-summary,.upload-editor,.upload-results{padding:16px}.upload-editor .department-actions{flex-wrap:wrap}}
+
+.uploads-heading .secondary[aria-pressed=true],.new-upload .secondary[aria-pressed=true],.upload-editor .secondary[aria-pressed=true]{background:#315da8;border-color:#315da8;color:#fff;font-weight:600;opacity:1}
+.new-upload fieldset>.date-field{width:100%;max-width:540px;min-width:0;font-size:13px}
+.uploads-list>.extension-heading{padding:20px 24px 0}.uploads-list>.extension-heading h2{margin:0}
+@media(max-width:700px){.uploads-list>.extension-heading{padding:16px 16px 0}}

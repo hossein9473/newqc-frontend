@@ -29,3 +29,6 @@ export function uploadFileProblem(file:{name:string;size:number}){
  if(file.name.length>255)return 'نام فایل نباید بیشتر از ۲۵۵ نویسه باشد.';
  return '';
 }
+
+export const uploadPollInterval=120000;
+export function canReviewUpload(status:string){return status==='completed';}

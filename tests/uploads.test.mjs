@@ -25,3 +25,9 @@ test('audio is raw bytes and the same retry identifier is sent on retry',async()
 test('network failure remains uncertain and server secrets stay hidden',async()=>{
  const original=globalThis.fetch;const f=new File(['x'],'x.wav');try{globalThis.fetch=async()=>{throw Error('internal')};await assert.rejects(sendAudio(1,f,'id','token',new AbortController().signal),e=>e instanceof ApiError&&e.status===0);globalThis.fetch=async()=>new Response(JSON.stringify({detail:'secret path'}),{status:500});await assert.rejects(sendAudio(1,f,'id','token',new AbortController().signal),e=>e.status===500&&!e.message.includes('secret'));}finally{globalThis.fetch=original;}
 });
+
+test('upload results are available only after processing completes, polling every two minutes',async()=>{
+ const {canReviewUpload,uploadPollInterval}=await import('../src/uploadRules.ts');
+ assert.equal(uploadPollInterval,120000);assert.equal(canReviewUpload('completed'),true);
+ for(const state of ['queued','processing','evaluating','failed','cancelled',''])assert.equal(canReviewUpload(state),false);
+});
