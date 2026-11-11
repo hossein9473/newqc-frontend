@@ -18,9 +18,9 @@ const labels:Record<string,string>={completed:'تکمیل‌شده',failed:'نا
 export default function Reports({token,route,onExpired}:{token:string;route:string;onExpired:()=>void}){
  const [formError,setFormError]=useState('');
  const [path,query='']=route.split('?');const match=path.match(/^\/calls\/(\d+)$/);const id=match?.[1];
- const [data,setData]=useState<Listing|null>(null);const [detail,setDetail]=useState<Detail|null>(null);const [runs,setRuns]=useState<Run[]>([]);const [run,setRun]=useState('');const [error,setError]=useState('');const [loading,setLoading]=useState(true);const [retry,setRetry]=useState(0);const [witness,setWitness]=useState('');
- const params=callViewParams(query);const offset=Math.max(0,Number(params.get('offset'))||0);const back=params.get('back')||'/calls';const safeBack=/^\/calls(?:\?|$)/.test(back)?back:'/calls';
- useEffect(()=>{setRun('');setWitness('');},[id]);
+ const [data,setData]=useState<Listing|null>(null);const [detail,setDetail]=useState<Detail|null>(null);const [runs,setRuns]=useState<Run[]>([]);const [run,setRun]=useState(()=>/^\d+$/.test(new URLSearchParams(query).get('run')||'')?new URLSearchParams(query).get('run')!:'');const [error,setError]=useState('');const [loading,setLoading]=useState(true);const [retry,setRetry]=useState(0);const [witness,setWitness]=useState('');
+ const params=callViewParams(query);const offset=Math.max(0,Number(params.get('offset'))||0);const back=params.get('back')||'/calls';const safeBack=/^\/(?:calls|reports\/questions)(?:\?|$)/.test(back)?back:'/calls';
+ useEffect(()=>{const selected=new URLSearchParams(query).get('run')||'';setRun(/^\d+$/.test(selected)?selected:'');setWitness('');},[id,query]);
  useEffect(()=>{
    let active=true;setLoading(true);setError('');setData(null);setDetail(null);setRuns([]);setWitness('');
    const load=async()=>{try{
