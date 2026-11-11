@@ -50,3 +50,5 @@ html{scrollbar-gutter:stable}.visually-hidden{position:absolute!important;width:
 .report-export{padding:16px 20px;background:#fff;border:1px solid #e5e1d8;border-radius:10px;margin:16px 0}.report-export-controls{display:flex;justify-content:flex-end;align-items:end;gap:12px;flex-wrap:wrap}.report-export label{display:grid;gap:6px;font-size:12px}.report-export>small{display:block;margin-top:12px;color:#65615a}.report-export .secondary[aria-pressed=true]{background:#315da8;color:white;border-color:#315da8}.report-export p{margin-bottom:0}
 
 .report-export h2{font-size:16px;font-weight:700;margin:0 0 6px}.report-export .report-export-description{font-size:12px;color:#65615a;margin:0 0 16px;line-height:1.9}
+
+.processing-stages,.processing-jobs{padding:24px;margin-top:20px}.processing-jobs>.filters{padding:0}@media(max-width:700px){.processing-stages,.processing-jobs{padding:16px}}
