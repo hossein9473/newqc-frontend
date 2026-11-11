@@ -1,3 +1,4 @@
+import {uploadError} from './uploadRules.ts';
 import {questionError} from './questionRules.ts';
 export class ApiError extends Error {
   status: number;
@@ -25,7 +26,7 @@ export async function request<T>(path:string, token:string|null, body?:unknown,m
         'Current password is incorrect':'رمز فعلی درست نیست.',
         'New password must differ from current password':'رمز جدید باید با رمز فعلی متفاوت باشد.',
       };
-      throw new ApiError(response.status,(path.includes('/question-sets')?questionError(data?.detail):undefined)||passwordErrors[data?.detail]||messages[response.status]||'ارتباط با سرور با خطا مواجه شد؛ دوباره تلاش کنید.');
+      throw new ApiError(response.status,(path.includes('/question-sets')?questionError(data?.detail):undefined)||(path.startsWith('/upload-batches')?uploadError(data?.detail):undefined)||passwordErrors[data?.detail]||messages[response.status]||'ارتباط با سرور با خطا مواجه شد؛ دوباره تلاش کنید.');
     }
     if(response.status===204)return undefined as T;
     return await response.json() as T;

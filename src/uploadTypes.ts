@@ -1,0 +1,3 @@
+export type UploadSelection={extension_assignment_id:number;extension:string;voip_source_name:string;support_agent_name:string;department_name:string};
+export type UploadBatch={id:number;name:string;display_name:string|null;status:string;started_at:string|null;draft_expires_at:string;selection:UploadSelection|null;call_date:string|null;call_time:string|null};
+export type UploadProgress={status:string;total:number;completed:number;skipped:number;failed:number;files:{call_id:number;original_filename:string;size_bytes:number;duration_ms:number|null;processing_status:string;eligibility_status:string;storage_status:string}[]};
