@@ -1,10 +1,9 @@
 import {ApiError} from './api.ts';
 export type ExportKind='calls'|'agents'|'questions'|'question-calls'|'departments'|'dashboard-trends';
 const base=['date_from','date_to','department_id','support_agent_id','source_type'];
-const allowed:Record<ExportKind,string[]>={calls:[...base,'extension','processing_status','evaluation_status','score_min','score_max','sort_by','sort_dir'],agents:[...base,'sort_by','sort_dir'],questions:[...base,'question_set_id','sort_by','sort_dir'],'question-calls':[...base,'question_set_id','question_revision_id','score','reason_code'],departments:[...base,'include_inactive','sort_by','sort_dir'],'dashboard-trends':base};
+const allowed:Record<ExportKind,string[]>={calls:[...base,'voip_source_id','extension','processing_status','evaluation_status','score_min','score_max','sort_by','sort_dir'],agents:[...base,'sort_by','sort_dir'],questions:[...base,'question_set_id','sort_by','sort_dir'],'question-calls':[...base,'question_set_id','question_revision_id','score','reason_code'],departments:[...base,'include_inactive','sort_by','sort_dir'],'dashboard-trends':base};
 export function exportParams(kind:ExportKind,scope:string,format:'xlsx'|'csv'){
  const input=new URLSearchParams(scope),p=new URLSearchParams();
- if(kind==='calls'&&input.get('voip_source_id'))throw new Error('خروجی با فیلتر مرکز تلفن هنوز پشتیبانی نمی‌شود.');
  for(const key of allowed[kind]){const value=input.get(key);if(value&&!(key==='evaluation_status'&&value==='all'))p.set(key,value);}
  if(kind==='departments'){if(!p.has('sort_by'))p.set('sort_by','total_calls');if(!p.has('sort_dir'))p.set('sort_dir','desc');}
  p.set('format',format);return p;
