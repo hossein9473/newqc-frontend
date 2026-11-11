@@ -3,3 +3,7 @@ export function costScope(query:string){const input=new URLSearchParams(query),p
 // Preserve backend decimal strings; do not round small amounts or coerce missing amounts to zero.
 export function costAmount(value:string|null){if(value===null)return 'نامشخص';return value.replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d)]).replace('.', '٫');}
 export function costGroupScope(scope:string,group:string,key:string,currency:string){const p=costScope(scope);p.set('currency',currency);const field=group==='department'?'department_id':group;if(['department_id','stage','provider','model'].includes(field))p.set(field,key);return p;}
+
+export function costRequestScope(query:string){const p=costScope(query);if(new URLSearchParams(query).get('only_unpriced')==='true')p.set('only_unpriced','true');return p;}
+export function removeCostFilter(query:string,key:string){const p=costRequestScope(query);p.delete(key);return p;}
+export function tokenAvailability(input:number,output:number){const n=new Intl.NumberFormat('fa-IR');if(input===0&&output===0)return 'تعداد توکن ورودی و خروجی همهٔ درخواست‌ها ثبت شده است.';return [input>0?`تعداد توکن ورودیِ ${n.format(input)} درخواست ثبت نشده است.`:'',output>0?`تعداد توکن خروجیِ ${n.format(output)} درخواست ثبت نشده است.`:''].filter(Boolean).join(' ');}
