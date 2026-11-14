@@ -1,0 +1,2 @@
+export function pageNumbers(page:number,total:number){const last=Math.max(0,Math.floor(total));if(!last)return [];const current=Math.max(1,Math.min(last,page));return [...new Set([1,last,current-2,current-1,current,current+1,current+2].filter(p=>p>=1&&p<=last))].sort((a,b)=>a-b);}
+export function requestedPage(value:string,max:number){const normalized=value.replace(/[۰-۹]/g,d=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d))).replace(/[٠-٩]/g,d=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)));const n=Number(normalized);return Number.isInteger(n)&&n>=1&&n<=max?n:null;}

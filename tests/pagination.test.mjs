@@ -1,0 +1,3 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {pageNumbers,requestedPage} from '../src/paginationRules.ts';
+test('page window includes first last and current without building thousands of buttons',()=>{assert.deepEqual(pageNumbers(50,100),[1,48,49,50,51,52,100]);assert.deepEqual(pageNumbers(1,3),[1,2,3]);assert.deepEqual(pageNumbers(1,0),[]);assert.ok(pageNumbers(1000,100000).length<=7)});
+test('page jumps accept Persian Arabic and Latin digits and reject out of range values',()=>{assert.equal(requestedPage('۱۲',100),12);assert.equal(requestedPage('٢',10),2);for(const s of ['0','101','1.5','abc',''])assert.equal(requestedPage(s,100),null)});

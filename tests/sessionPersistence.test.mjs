@@ -1,0 +1,6 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {savedToken,saveToken,clearToken,tokenExpiresAt} from '../src/sessionStorage.ts';
+const token=exp=>'header.'+Buffer.from(JSON.stringify({exp})).toString('base64url')+'.signature';
+function storage(){const map=new Map();return {getItem:k=>map.get(k)||null,setItem:(k,v)=>map.set(k,v),removeItem:k=>map.delete(k)};}
+test('valid token survives reload until its own expiry, without extending it',()=>{const store=storage(),expiry=Math.floor(Date.now()/1000)+60,t=token(expiry);saveToken(store,t);assert.equal(savedToken(store),t);assert.equal(savedToken(store,expiry*1000),null);assert.equal(savedToken(store),null);});
+test('logout removes saved token and malformed expiry is rejected',()=>{const store=storage();saveToken(store,token(Math.floor(Date.now()/1000)+60));clearToken(store);assert.equal(savedToken(store),null);for(const t of ['bad',token('123'),token(null)])assert.equal(tokenExpiresAt(t),0);});
+test('unavailable browser storage does not crash login or restoration',()=>{const store={getItem(){throw Error('blocked')},setItem(){throw Error('blocked')},removeItem(){throw Error('blocked')}};assert.equal(savedToken(store),null);assert.doesNotThrow(()=>saveToken(store,token(Math.floor(Date.now()/1000)+60)));assert.doesNotThrow(()=>clearToken(store));});

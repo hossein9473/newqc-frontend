@@ -1,0 +1,14 @@
+import {useEffect,useRef,useState,Fragment} from 'react';
+import {pageNumbers,requestedPage} from './paginationRules';
+const pending=new Set<string>();const n=new Intl.NumberFormat('fa-IR');
+export default function Pagination({id,page,totalPages,onPage,disabled=false,hasNext=false,target}:{id:string;page:number;totalPages?:number;onPage:(page:number)=>void;disabled?:boolean;hasNext?:boolean;target?:string}){
+ const ref=useRef<HTMLElement>(null);const [jump,setJump]=useState('');const maximum=totalPages??page+(hasNext?1:0);const next=totalPages===undefined?hasNext:page<totalPages;
+ function scroll(){const node=ref.current;if(!node)return;const main=node.closest('main')||document;const nearby=node.closest('.question-call-results,section,.publish-review');let anchor:Element|null=target?main.querySelector(target):nearby;
+ if(!anchor){const panels=Array.from(main.querySelectorAll('section.panel'));anchor=panels.filter(p=>Boolean(p.compareDocumentPosition(node)&Node.DOCUMENT_POSITION_FOLLOWING)).at(-1)||null;}
+ const table=anchor?.querySelector('.table-scroll-viewport');if(table)table.scrollTop=0;const start=anchor?.querySelector('.accessible-table,.tablewrap,.performance-bars,ul')||anchor;start?.scrollIntoView({block:'start',behavior:'instant'});
+ }
+ useEffect(()=>{if(!disabled&&pending.has(id)){const frame=requestAnimationFrame(()=>{pending.delete(id);scroll()});return()=>cancelAnimationFrame(frame)}},[page,disabled]);
+ function change(value:number){if(disabled||value===page||value<1||value>maximum)return;pending.add(id);scroll();setJump('');onPage(value);}
+ const numbers=pageNumbers(page,maximum);
+ return <nav ref={ref} className="pagination" aria-label="صفحه‌بندی"><button type="button" disabled={disabled||page<=1} onClick={()=>change(page-1)}>قبلی</button>{numbers.map((value,i)=><Fragment key={value}>{i>0&&value>numbers[i-1]+1&&<span aria-hidden="true">…</span>}<button type="button" disabled={disabled} aria-current={value===page?'page':undefined} className={value===page?'selected-page':''} onClick={()=>change(value)}>{n.format(value)}</button></Fragment>)}<button type="button" disabled={disabled||!next} onClick={()=>change(page+1)}>بعدی</button><span>{totalPages===0?'بدون صفحه':`صفحهٔ ${n.format(page)}`+(totalPages===undefined?'':` از ${n.format(totalPages)}`)}</span>{maximum>1&&<label className="page-jump">رفتن به صفحه<input aria-label="شمارهٔ صفحه" inputMode="numeric" value={jump} disabled={disabled} onChange={e=>setJump(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'){e.preventDefault();const value=requestedPage(jump,maximum);if(value!==null)change(value)}}}/><button type="button" disabled={disabled||requestedPage(jump,maximum)===null} onClick={()=>{const value=requestedPage(jump,maximum);if(value!==null)change(value)}}>برو</button></label>}</nav>;
+}
