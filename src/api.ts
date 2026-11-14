@@ -32,7 +32,7 @@ export async function request<T>(path:string, token:string|null, body?:unknown,m
     return await response.json() as T;
   } catch(error){
     if(error instanceof ApiError)throw error;
-    throw new ApiError(0,controller.signal.aborted?'سرور در زمان مناسب پاسخ نداد.':'اتصال به سرور برقرار نشد. اجرای بک‌اند را بررسی کنید.');
+    throw new ApiError(0,controller.signal.aborted?'سرور در زمان مناسب پاسخ نداد.':'اتصال به سرور برقرار نشد. لطفاً دوباره تلاش کنید.');
   } finally {clearTimeout(timer);}
 }
 export type User={id:number;full_name:string;email:string;role:'admin'|'manager'|'supervisor'|'analyst'};
